@@ -1,20 +1,22 @@
 from selene import browser, have
 
 
-def set_cookie_from_api_and_open_cart(cookie):
+def open_cart_with_cookie_from_api(cookie):
     browser.open('/')
     browser.driver.add_cookie({'name': 'Nop.customer', 'value': cookie})
     browser.open('/cart')
 
 
-def cart_should_have_product_with_quantity(product_name, quantity):
+def check_cart_have_product_with_quantity(product_name, quantity):
     browser.element('.cart-item-row').should(have.text(product_name))
     browser.element('.qty-input').should(have.value(str(quantity)))
 
 
-def cart_should_have_products(product_name_1, product_name_2):
-    browser.element('.cart').should(have.text(product_name_1))
-    browser.element('.cart').should(have.text(product_name_2))
+def check_exact_products_in_cart(product_1, product_2):
+    rows = browser.all('.cart-item-row')
+
+    rows.element_by(have.text(product_1))
+    rows.element_by(have.text(product_2))
 
 
 def cart_should_be_empty():
