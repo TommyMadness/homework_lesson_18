@@ -1,11 +1,10 @@
-from allure_commons._allure import step
+from allure import step
 from api import cart_api
 from ui import cart_methods
 
 def test_remove_product_after_adding(browser_setup):
-    '''Add product then remove it (API + UI)'''
     with step('Add product'):
-        result = cart_api.add_product(product_id=45, quantity=1)
+        result = cart_api.add_product_to_cart(product_id=45, quantity=1)
 
     with step('Get cookie from API'):
         cookie = cart_api.get_cookie_from_api(result)
@@ -21,9 +20,8 @@ def test_remove_product_after_adding(browser_setup):
 
 
 def test_add_product_with_large_quantity(browser_setup):
-    '''Add large quantity of a product (API)'''
     with step('Add product'):
-        result = cart_api.add_product(product_id=43, quantity=100)
+        result = cart_api.add_product_to_cart(product_id=43, quantity=100)
 
     with step('Get cookie from API'):
         cookie = cart_api.get_cookie_from_api(result)
@@ -36,15 +34,14 @@ def test_add_product_with_large_quantity(browser_setup):
 
 
 def test_adding_product_multiple_times(browser_setup):
-    '''Add same product twice (API)'''
     with step('Add product 1st time'):
-        result = cart_api.add_product(product_id=22, quantity=1)
+        result = cart_api.add_product_to_cart(product_id=22, quantity=1)
 
     with step('Get cookie from API'):
         cookie = cart_api.get_cookie_from_api(result)
 
     with step('Add same product again'):
-        cart_api.add_product_with_cookie(product_id=22, quantity=2, cookie=cookie)
+        cart_api.add_product_to_cart_with_cookie(product_id=22, quantity=2, cookie=cookie)
 
     with step('Set cookie and open Cart'):
         cart_methods.set_cookie_from_api_and_open_cart(cookie)
